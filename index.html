@@ -81,10 +81,91 @@ body {
     animation: sway 4s ease-in-out infinite;
 }
 
+.stem {
+    position: absolute;
+    width: 12px;
+    height: 240px;
+    background: linear-gradient(to bottom, #2e8b57, #006400);
+    bottom: 0;
+    left: 119px;
+    border-radius: 10px;
+}
+
+.leaf {
+    position: absolute;
+    width: 90px;
+    height: 45px;
+    background: linear-gradient(to right, #3cb371, #2e8b57);
+    border-radius: 50px 0 50px 0;
+}
+
+.leaf.left {
+    bottom: 130px;
+    left: 40px;
+    transform: rotate(-30deg);
+}
+
+.leaf.right {
+    bottom: 90px;
+    right: 40px;
+    transform: rotate(30deg);
+}
+
+.petal {
+    position: absolute;
+    width: 110px;
+    height: 180px;
+    background: radial-gradient(circle at top, #ffffff, #f0f0f0);
+    border-radius: 50% 50% 40% 40%;
+    top: 20px;
+    left: 70px;
+    transform-origin: bottom center;
+    transform: rotate(var(--r));
+    box-shadow: 0 0 25px rgba(255,255,255,0.7);
+}
+
+.center {
+    position: absolute;
+    width: 30px;
+    height: 120px;
+    background: linear-gradient(to bottom, #ffcc33, #cc9900);
+    border-radius: 15px;
+    top: 90px;
+    left: 110px;
+}
+
+/* sway */
 @keyframes sway {
     0% { transform: rotate(-2deg); }
     50% { transform: rotate(2deg); }
     100% { transform: rotate(-2deg); }
+}
+
+/* ===== FIREWORK ===== */
+.firework {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: gold;
+    border-radius: 50%;
+    opacity: 0;
+}
+
+.firework.active {
+    animation: explode 1.5s ease-out infinite;
+}
+
+.firework:nth-of-type(1){ top:40px; left:10%;}
+.firework:nth-of-type(2){ top:70px; left:80%;}
+.firework:nth-of-type(3){ top:20px; left:50%;}
+.firework:nth-of-type(4){ bottom:250px; left:20%;}
+.firework:nth-of-type(5){ bottom:220px; right:15%;}
+.firework:nth-of-type(6){ top:100px; right:5%;}
+
+@keyframes explode {
+    0% { transform: scale(0); opacity:1; }
+    50% { transform: scale(6); opacity:1; }
+    100% { transform: scale(10); opacity:0; }
 }
 
 /* ===== FALLING RINGS ===== */
@@ -123,17 +204,23 @@ mau pake lagi yaa?
     <div class="petal" style="--r:180deg"></div>
     <div class="petal" style="--r:240deg"></div>
     <div class="petal" style="--r:300deg"></div>
-
     <div class="center"></div>
     <div class="stem"></div>
     <div class="leaf left"></div>
     <div class="leaf right"></div>
 </div>
 
+<div class="firework"></div>
+<div class="firework"></div>
+<div class="firework"></div>
+<div class="firework"></div>
+<div class="firework"></div>
+<div class="firework"></div>
+
 <script>
 let text = `anyaa baaikkkk dan paling cantikkkk 
 
-maaf yaaa kemareen benerann lupaa buat pakee cincinnyaaa
+maaf yaaa kemareen benerann lupaa buat pakee cincinnyaa
 maaf yaa udah buat anyaa kecewaa
 
 plisss pake lagiii yaa cincinnya
@@ -144,6 +231,7 @@ inii bungaa untuk anyaa`;
 let container = document.getElementById("typing");
 let flower = document.getElementById("flower");
 let btn = document.getElementById("btn");
+let fireworks = document.querySelectorAll(".firework");
 
 let i = 0;
 
@@ -157,37 +245,25 @@ function typeLetter() {
     } else {
         flower.classList.add("show");
         btn.classList.add("show");
+        fireworks.forEach(f => f.classList.add("active"));
     }
 }
 
 function createRing() {
     let ring = document.createElement("div");
     ring.classList.add("falling-ring");
-
-    // posisi random kiri-kanan
     ring.style.left = Math.random() * 100 + "vw";
-
-    // durasi jatuh random
     ring.style.animationDuration = (2 + Math.random() * 2) + "s";
-
     document.body.appendChild(ring);
-
-    setTimeout(() => {
-        ring.remove();
-    }, 4000);
+    setTimeout(() => ring.remove(), 4000);
 }
 
 function clicked() {
-    btn.innerHTML = "YEEEAAAYY ANYAAAA MAUUUU";
+    btn.innerHTML = "YEEAAAY ANYAAA MAUUU";
     btn.style.background = "#ff1493";
 
-    // hujan cincin
     let interval = setInterval(createRing, 200);
-
-    // berhenti setelah 5 detik
-    setTimeout(() => {
-        clearInterval(interval);
-    }, 5000);
+    setTimeout(() => clearInterval(interval), 5000);
 }
 
 typeLetter();
